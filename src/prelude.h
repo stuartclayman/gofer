@@ -28,7 +28,7 @@
 #define ZTC      0	/* For IBM PC (>= 386) Zortech C++ v3.0 (-mx)	   */
 #define DJGPP    0	/* For DJGPP version 1.09 (gcc2.2.2) and DOS 5.0   */
 #define OS2      0	/* For IBM OS/2 2.0 using EMX GCC		   */
-#define SUNOS    1      /* For Sun 3/Sun 4 running SunOs 4.x		   */
+#define SUNOS    0      /* For Sun 3/Sun 4 running SunOs 4.x		   */
 #define MIPS	 0	/* For MIPS RC6280/Sony machine NWS-3870	UN */
 #define NEXTSTEP 0      /* For NeXTstep 3.0 using NeXT cc		   */
 #define NEXTGCC  0	/* For NeXTstep with gcc 2.x, doesn't work w/ NS3.2*/
@@ -43,7 +43,7 @@
 #define AIX	 0	/* For IBM AIX on RS/6000 using GCC		   */
 #define ATARI	 0	/* For Atari ST/STE/TT/Falcon w/ Lattice C 5.52 UN */
 #define SGI4	 0	/* For SiliconGraphics Indigo, IRIX v*4*.0.5	UN */
-#define NETBSD	 0	/* For NetBSD-current				   */
+#define NETBSD	 1	/* For NetBSD-current				   */
 
 /*---------------------------------------------------------------------------
  * To add a new machine/compiler, add a new macro line above, add the new
@@ -203,7 +203,9 @@ extern  int  kbhit	Args((void));
 #endif
 
 #if     (HPUX | DJGPP | ZTC | LINUX | ALPHA | OS2 | SVR4 | AIX | SGI4 | NETBSD)
+#include <string.h>
 #include <stdlib.h>
+#define	Main		int
 #define  far
 #endif
 
@@ -250,7 +252,7 @@ extern   int namecmp    Args((char *, char *));
 #define sigResume	   return
 #endif
 #ifndef Main			/* to cope with systems that don't like	   */
-#define Main		   Void /* main to be declared as returning Void   */
+#define Main		   Int  /* main to be declared as returning Void   */
 #endif
 #ifndef MainDone
 #define MainDone
@@ -259,6 +261,11 @@ extern   int namecmp    Args((char *, char *));
 #if (UNIX | DJGPP | RISCOS | ZTC | WATCOM | ATARI)
 #define ctrlbrk(bh)	   signal(SIGINT,bh)
 #endif
+
+#if UNIX
+#include <unistd.h>
+#endif
+
 
 /*---------------------------------------------------------------------------
  * General settings:
